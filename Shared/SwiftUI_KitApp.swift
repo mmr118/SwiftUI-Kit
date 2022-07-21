@@ -17,6 +17,7 @@ struct SwiftUI_KitApp: App {
         WindowGroup {
 
             ContentView()
+                .accentColor(.accentColor)
                 .applyTo(os: .macOS) { content in
                     content
                         .frame(minWidth: 100, idealWidth: 300, maxWidth: .infinity, minHeight: 100, idealHeight: 200, maxHeight: .infinity)

@@ -12,19 +12,21 @@ struct ContentView: View {
     var body: some View {
 
         NavigationView {
+
             #if os(iOS) || os(watchOS) || os(tvOS)
             list.navigationBarTitle("SwiftUI")
             Text("Select a group")
+
             #elseif os(OSX)
             list.listStyle(SidebarListStyle())
             Text("Select a group").frame(maxWidth: .infinity, maxHeight: .infinity)
+
             #endif
         }
-        .accentColor(.accentColor)
 
     }
 
-    var list: some View {
+    @ViewBuilder var list: some View {
 
         List {
             Grouping(title: "Buttons", icon: "capsule", content: { ButtonsGroup() })
@@ -84,5 +86,6 @@ struct Grouping<Content: View>: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .previewUpdateDate()
     }
 }
