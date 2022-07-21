@@ -8,63 +8,42 @@
 import SwiftUI
 
 struct ContentView: View {
-
-    var body: some View {
-
-        NavigationView {
-
-            #if os(iOS) || os(watchOS) || os(tvOS)
-            list.navigationBarTitle("SwiftUI")
-            Text("Select a group")
-
-            #elseif os(OSX)
-            list.listStyle(SidebarListStyle())
-            Text("Select a group").frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            #endif
-        }
-
-    }
-
-    @ViewBuilder var list: some View {
-
+    
+    var list: some View {
         List {
             Grouping(title: "Buttons", icon: "capsule", content: { ButtonsGroup() })
             Grouping(title: "Colors", icon: "paintpalette", content: { ColorsGroup() })
             Grouping(title: "Controls", icon: "slider.horizontal.3", content: { ControlsGroup() })
             Grouping(title: "Fonts", icon: "textformat", content: { FontsGroup() })
-
-            iosContent()
-
+            
+            #if os(iOS)
+            Group{
+                Grouping(title: "Haptics", icon: "waveform", content: { HapticsGroup() })
+                Grouping(title: "Gestures", icon: "hand.tap", content: { GesturesGroup() })
+            }
+            #endif
             Grouping(title: "Images", icon: "photo", content: { ImagesGroup() })
             Grouping(title: "Indicators", icon: "speedometer", content: { IndicatorsGroup() })
             Grouping(title: "Shapes", icon: "square.on.circle", content: { ShapesGroup() })
             Grouping(title: "Text", icon: "text.aligncenter", content: { TextGroup() })
-
-            notWatchOSContent()
+            #if !os(watchOS)
+            Grouping(title: "Map", icon: "map", content: { MapGroup() })
+            #endif
         }
-
     }
-
-    private func iosContent() -> some View {
-        #if os(iOS)
-        Group{
-            Grouping(title: "Haptics", icon: "waveform", content: { HapticsGroup() })
-            Grouping(title: "Gestures", icon: "hand.tap", content: { GesturesGroup() })
+    
+    var body: some View {
+        NavigationView {
+            #if os(iOS) || os(watchOS) || os(tvOS)
+            list.navigationBarTitle("SwiftUI")
+            Text("Select a group")
+            #elseif os(OSX)
+            list.listStyle(SidebarListStyle())
+            Text("Select a group").frame(maxWidth: .infinity, maxHeight: .infinity)
+            #endif
         }
-        #else
-        EmptyView()
-        #endif
+        .accentColor(.accentColor)
     }
-
-    private func notWatchOSContent() -> some View {
-        #if !os(watchOS)
-        Grouping(title: "Map", icon: "map", content: { MapGroup() })
-        #else
-        EmptyView()
-        #endif
-    }
-
 }
 
 struct Grouping<Content: View>: View {
@@ -86,6 +65,5 @@ struct Grouping<Content: View>: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .previewUpdateDate()
     }
 }

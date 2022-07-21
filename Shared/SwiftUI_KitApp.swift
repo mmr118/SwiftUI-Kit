@@ -9,22 +9,13 @@ import SwiftUI
 
 @main
 struct SwiftUI_KitApp: App {
-
-    @Environment(\.currentOSKind) var currentOS
-
     var body: some Scene {
-
         WindowGroup {
-
+            #if os(macOS)
+            ContentView().frame(minWidth: 100, idealWidth: 300, maxWidth: .infinity, minHeight: 100, idealHeight: 200, maxHeight: .infinity)
+            #else
             ContentView()
-                .accentColor(.accentColor)
-                .applyTo(os: .macOS) { content in
-                    content
-                        .frame(minWidth: 100, idealWidth: 300, maxWidth: .infinity, minHeight: 100, idealHeight: 200, maxHeight: .infinity)
-                }
-
+            #endif
         }
-
     }
-
 }
