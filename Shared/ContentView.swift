@@ -8,31 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    var list: some View {
-        List {
-            Grouping(title: "Buttons", icon: "capsule", content: { ButtonsGroup() })
-            Grouping(title: "Colors", icon: "paintpalette", content: { ColorsGroup() })
-            Grouping(title: "Controls", icon: "slider.horizontal.3", content: { ControlsGroup() })
-            Grouping(title: "Fonts", icon: "textformat", content: { FontsGroup() })
-            
-            #if os(iOS)
-            Group{
-                Grouping(title: "Haptics", icon: "waveform", content: { HapticsGroup() })
-                Grouping(title: "Gestures", icon: "hand.tap", content: { GesturesGroup() })
-            }
-            #endif
-            Grouping(title: "Images", icon: "photo", content: { ImagesGroup() })
-            Grouping(title: "Indicators", icon: "speedometer", content: { IndicatorsGroup() })
-            Grouping(title: "Shapes", icon: "square.on.circle", content: { ShapesGroup() })
-            Grouping(title: "Text", icon: "text.aligncenter", content: { TextGroup() })
-            #if !os(watchOS)
-            Grouping(title: "Map", icon: "map", content: { MapGroup() })
-            #endif
-        }
-    }
-    
+
     var body: some View {
+
         NavigationView {
             #if os(iOS) || os(watchOS) || os(tvOS)
             list.navigationBarTitle("SwiftUI")
@@ -43,7 +21,48 @@ struct ContentView: View {
             #endif
         }
         .accentColor(.accentColor)
+
     }
+
+    var list: some View {
+
+        List {
+            Grouping(title: "Buttons", icon: "capsule", content: { ButtonsGroup() })
+            Grouping(title: "Colors", icon: "paintpalette", content: { ColorsGroup() })
+            Grouping(title: "Controls", icon: "slider.horizontal.3", content: { ControlsGroup() })
+            Grouping(title: "Fonts", icon: "textformat", content: { FontsGroup() })
+
+            iosContent()
+
+            Grouping(title: "Images", icon: "photo", content: { ImagesGroup() })
+            Grouping(title: "Indicators", icon: "speedometer", content: { IndicatorsGroup() })
+            Grouping(title: "Shapes", icon: "square.on.circle", content: { ShapesGroup() })
+            Grouping(title: "Text", icon: "text.aligncenter", content: { TextGroup() })
+
+            notWatchOSContent()
+        }
+
+    }
+
+    private func iosContent() -> some View {
+        #if os(iOS)
+        Group{
+            Grouping(title: "Haptics", icon: "waveform", content: { HapticsGroup() })
+            Grouping(title: "Gestures", icon: "hand.tap", content: { GesturesGroup() })
+        }
+        #else
+        EmptyView()
+        #endif
+    }
+
+    private func notWatchOSContent() -> some View {
+        #if !os(watchOS)
+        Grouping(title: "Map", icon: "map", content: { MapGroup() })
+        #else
+        EmptyView()
+        #endif
+    }
+
 }
 
 struct Grouping<Content: View>: View {
